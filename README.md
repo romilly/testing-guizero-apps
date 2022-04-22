@@ -21,4 +21,4 @@ In a directory fo your choice,
 
 ### The test
 
-```python3 ```
+```python3 test-app.py```
