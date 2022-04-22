@@ -11,7 +11,7 @@ The game code is adapted from the example in [Create Graphical User Interfaces i
 ## To Install:
 
 In a directory fo your choice,
-```git clone ```
+```git clone https://github.com/romilly/testing-guizero-apps.git```
 
 ## To run:
 
