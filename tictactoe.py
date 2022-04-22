@@ -9,7 +9,6 @@ class TicTacToeApp(App):
         self.board = Box(self, layout="grid")
         self.board_squares = self.clear_board()
         self.message = Text(self, text="It is your turn, " + self.turn)
-        self.winner = None
 
     def square(self, x, y):
         return self.board_squares[x][y]
