@@ -135,4 +135,4 @@ ENV/
 # Rope project settings
 .ropeproject
 
-plan/resources/
+.idea/
