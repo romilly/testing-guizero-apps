@@ -63,12 +63,3 @@ class MyTestCase(unittest.TestCase):
         self.play(1, 2)
         self.play(1, 0)
         self.assertEqual("It's a draw", self.message_value())
-
-    def show_board(self):
-        for x in range(3):
-            print([self.app.board_squares[x][y].text for y in range(3)])
-        print(' ')
-
-
-if __name__ == '__main__':
-    unittest.main()
