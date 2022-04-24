@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-import unittest
 from guizero import PushButton
-from tictactoe import TicTacToeApp
-
 
 def push(button: PushButton) -> None:
     button.tk.invoke()
 
+import unittest
+from tictactoe import TicTacToeApp
 
 class MyTestCase(unittest.TestCase):
     @classmethod
@@ -15,9 +14,6 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
         self.app.reset_board()
-        self.app.winner = None
-        self.app.turn = 'X'
-        self.app.message.value = 'It is your turn, X'
 
     def message_value(self):
         return self.app.message.value
@@ -26,33 +22,32 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(self.message_value(), 'It is your turn, %s' % player)
         push(self.app.square(x, y))
 
-    def test_shows_player_X_at_start(self):
-        self.assertEqual(self.message_value(), 'It is your turn, X')
-
     def test_turn_changes_after_player_moves(self):
         self.play(0, 0, 'X')
         self.assertEqual(self.message_value(), 'It is your turn, O')
-        expected_board = """
-        X-- 
-        ---
-        ---"""
-        self.check_board(expected_board)
 
-    def test_knows_if_x_has_won(self):
-        self.play(0, 0, 'X')
-        self.play(0, 1, 'O')
-        self.play(1, 0, 'X')
-        self.play(0, 2, 'O')
-        self.play(2, 0, 'X')
-        self.assertEqual(self.message_value(), 'X wins!')
+    # def test_knows_if_x_has_won(self):
+    #     self.play(0, 0, 'X')
+    #     self.play(0, 1, 'O')
+    #     self.play(1, 0, 'X')
+    #     self.play(0, 2, 'O')
+    #     self.play(2, 0, 'X')
+    #     self.check_board("X--OX-O-X")
+    #     self.assertEqual(self.message_value(), 'X wins!')
 
     def test_knows_if_o_has_won(self):
         self.play(0, 0, 'X')
+        self.check_board("X-- --- ---")
         self.play(0, 1, 'O')
+        self.check_board("X-- O-- ---")
         self.play(1, 0, 'X')
+        self.check_board("XX- O-- ---")
         self.play(1, 1, 'O')
+        self.check_board("XX- OO- ---")
         self.play(1, 2, 'X')
+        self.check_board("XX- OO- -X-")
         self.play(2, 1, 'O')
+        self.check_board("XX- OO0 -X-")
         self.assertEqual(self.message_value(), 'O wins!')
 
     def test_recognises_draw(self):
@@ -71,21 +66,18 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(self.see_expected_board(expected_board), self.see_board())
 
     def see_expected_board(self, expected_board):
-        result = []
-        lines = expected_board.split('\n')
-        for line in lines:
-            for char in line:
-                if char in 'XO':
-                    result.append(char)
-                if char == '-':
-                    result.append(' ')
-        return result
+        return list(row[0] for row in zip(expected_board.split(' ')))
 
     def see_board(self):
         result = []
         for y in range(3):
+            row = ''
             for x in range(3):
-                result.append(self.app.square(x, y).text)
+                row += self.square_contents(x, y)
+            result.append(row)
         return result
+
+    def square_contents(self, x, y):
+        return self.app.square(x, y).text.replace(' ','-')
 
 
