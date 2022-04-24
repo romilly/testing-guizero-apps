@@ -22,44 +22,42 @@ class MyTestCase(unittest.TestCase):
     def message_value(self):
         return self.app.message.value
 
-    def play(self, x, y):
+    def play(self, x, y, player):
+        self.assertEqual(self.message_value(), 'It is your turn, %s' % player)
         push(self.app.square(x, y))
 
     def test_shows_player_X_at_start(self):
         self.assertEqual(self.message_value(), 'It is your turn, X')
 
     def test_turn_changes_after_player_moves(self):
-        self.assertEqual(self.message_value(), 'It is your turn, X')
-        self.play(0, 0)
+        self.play(0, 0, 'X')
         self.assertEqual(self.message_value(), 'It is your turn, O')
 
     def test_knows_if_x_has_won(self):
-        self.assertEqual(self.message_value(), 'It is your turn, X')
-        self.play(0, 0)
-        self.play(0, 1)
-        self.play(1, 0)
-        self.play(0, 2)
-        self.play(2, 0)
+        self.play(0, 0, 'X')
+        self.play(0, 1, 'O')
+        self.play(1, 0, 'X')
+        self.play(0, 2, 'O')
+        self.play(2, 0, 'X')
         self.assertEqual(self.message_value(), 'X wins!')
 
     def test_knows_if_o_has_won(self):
-        self.assertEqual(self.message_value(), 'It is your turn, X')
-        self.play(0, 0)
-        self.play(0, 1)
-        self.play(1, 0)
-        self.play(1, 1)
-        self.play(1, 2)
-        self.play(2, 1)
+        self.play(0, 0, 'X')
+        self.play(0, 1, 'O')
+        self.play(1, 0, 'X')
+        self.play(1, 1, 'O')
+        self.play(1, 2, 'X')
+        self.play(2, 1, 'O')
         self.assertEqual(self.message_value(), 'O wins!')
 
     def test_recognises_draw(self):
-        self.play(0, 0)
-        self.play(1, 1)
-        self.play(2, 2)
-        self.play(0, 1)
-        self.play(2, 1)
-        self.play(2, 0)
-        self.play(0, 2)
-        self.play(1, 2)
-        self.play(1, 0)
+        self.play(0, 0, 'X')
+        self.play(1, 1, 'O')
+        self.play(2, 2, 'X')
+        self.play(0, 1, 'O')
+        self.play(2, 1, 'X')
+        self.play(2, 0, 'O')
+        self.play(0, 2, 'X')
+        self.play(1, 2, 'O')
+        self.play(1, 0, 'X')
         self.assertEqual("It's a draw", self.message_value())
