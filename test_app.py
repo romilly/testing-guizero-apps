@@ -32,6 +32,11 @@ class MyTestCase(unittest.TestCase):
     def test_turn_changes_after_player_moves(self):
         self.play(0, 0, 'X')
         self.assertEqual(self.message_value(), 'It is your turn, O')
+        expected_board = """
+        X-- 
+        ---
+        ---"""
+        self.check_board(expected_board)
 
     def test_knows_if_x_has_won(self):
         self.play(0, 0, 'X')
@@ -61,3 +66,26 @@ class MyTestCase(unittest.TestCase):
         self.play(1, 2, 'O')
         self.play(1, 0, 'X')
         self.assertEqual("It's a draw", self.message_value())
+
+    def check_board(self, expected_board):
+        self.assertEqual(self.see_expected_board(expected_board), self.see_board())
+
+    def see_expected_board(self, expected_board):
+        result = []
+        lines = expected_board.split('\n')
+        for line in lines:
+            for char in line:
+                if char in 'XO':
+                    result.append(char)
+                if char == '-':
+                    result.append(' ')
+        return result
+
+    def see_board(self):
+        result = []
+        for y in range(3):
+            for x in range(3):
+                result.append(self.app.square(x, y).text)
+        return result
+
+
