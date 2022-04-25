@@ -41,8 +41,8 @@ class TicTacToeApp(App):
         return sum(square.text in "XO" for row in self.board_squares for square in row)
 
     def choose_square(self, x, y):
-        self.square(x,y).text = self.turn
-        self.square(x,y).disable()
+        self.square(x, y).text = self.turn
+        self.square(x, y).disable()
         self.toggle_player()
         self.is_game_won_or_drawn()
 
@@ -55,17 +55,17 @@ class TicTacToeApp(App):
     def is_game_won_or_drawn(self):
         last_player = self.last_player()
         if (
-        # Vertical lines
-            self.winning_line(last_player, (0,0), (0,1), (0,2)) or
-            self.winning_line(last_player, (1,0), (1,1), (1,2)) or
-            self.winning_line(last_player, (2,0), (2,1), (2,2)) or
-        # Horizontal lines
-            self.winning_line(last_player, (0,0), (1,0), (2,0)) or
-            self.winning_line(last_player, (0,1), (1,1), (2,1)) or
-            self.winning_line(last_player, (0,2), (1,2), (2,2)) or
-        # Diagonals
-            self.winning_line(last_player, (0,0), (1,1), (2,2)) or
-            self.winning_line(last_player, (0,2), (1,1), (2,0))):
+            # Vertical lines
+                self.winning_line(last_player, (0, 0), (0, 1), (0, 2)) or
+                self.winning_line(last_player, (1, 0), (1, 1), (1, 2)) or
+                self.winning_line(last_player, (2, 0), (2, 1), (2, 2)) or
+                # Horizontal lines
+                self.winning_line(last_player, (0, 0), (1, 0), (2, 0)) or
+                self.winning_line(last_player, (0, 1), (1, 1), (2, 1)) or
+                self.winning_line(last_player, (0, 2), (1, 2), (2, 2)) or
+                # Diagonals
+                self.winning_line(last_player, (0, 0), (1, 1), (2, 2)) or
+                self.winning_line(last_player, (0, 2), (1, 1), (2, 0))):
             self.winner = last_player
             self.message.value = "%s wins!" % self.winner
         elif self.moves_taken() == 9:
