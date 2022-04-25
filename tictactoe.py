@@ -44,7 +44,7 @@ class TicTacToeApp(App):
         self.square(x,y).text = self.turn
         self.square(x,y).disable()
         self.toggle_player()
-        self.check_win(self.board_squares)
+        self.is_game_won_or_drawn()
 
     def winning_line(self, last_player, *locations):
         for x, y in locations:
@@ -52,7 +52,7 @@ class TicTacToeApp(App):
                 return False
         return True
 
-    def check_win(self, board_squares):
+    def is_game_won_or_drawn(self):
         last_player = self.last_player()
         if (
         # Vertical lines
