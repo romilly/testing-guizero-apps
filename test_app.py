@@ -20,7 +20,7 @@ class MyTestCase(unittest.TestCase):
 
     def play(self, x, y, player):
         self.assertEqual(self.message_value(), 'It is your turn, %s' % player)
-        push(self.app.square(x, y))
+        self.push(x, y)
 
     def test_turn_changes_after_player_moves(self):
         self.play(0, 0, 'X')
@@ -43,6 +43,19 @@ class MyTestCase(unittest.TestCase):
         self.play(2, 1, 'O')
         self.assertEqual(self.message_value(), 'O wins!')
 
+    def test_game_stops_when_someone_wins(self):
+        self.play(0, 0, 'X')
+        self.play(0, 1, 'O')
+        self.play(1, 0, 'X')
+        self.play(1, 1, 'O')
+        self.play(1, 2, 'X')
+        self.play(2, 1, 'O')
+        # O wins!
+        self.push(0, 2) # should be ignored
+        self.push(2, 0) # should be ignored
+        self.push(2, 2) # should be ignored
+        self.assertEqual(self.message_value(), 'O wins!')
+
     def test_recognises_draw(self):
         self.play(0, 0, 'X')
         self.play(1, 1, 'O')
@@ -57,5 +70,8 @@ class MyTestCase(unittest.TestCase):
 
     def square_contents(self, x, y):
         return self.app.square(x, y).text.replace(' ','-')
+
+    def push(self, x, y):
+        push(self.app.square(x, y))
 
 

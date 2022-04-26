@@ -67,9 +67,15 @@ class TicTacToeApp(App):
                 self.winning_line(last_player, (0, 0), (1, 1), (2, 2)) or
                 self.winning_line(last_player, (0, 2), (1, 1), (2, 0))):
             self.winner = last_player
+            self.disable_all_squares()
             self.message.value = "%s wins!" % self.winner
         elif self.moves_taken() == 9:
             self.message.value = "It's a draw"
+
+    def disable_all_squares(self):
+        for i in range(3):
+            for j in range(3):
+                self.square(i, j).disable()
 
 
 if __name__ == "__main__":
