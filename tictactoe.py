@@ -4,26 +4,29 @@ from typing import List
 from guizero import App, Box, PushButton, Text
 
 
+WINNING_LINES = [
+    # Vertical lines
+    ((0, 0), (0, 1), (0, 2)),
+    ((1, 0), (1, 1), (1, 2)),
+    ((2, 0), (2, 1), (2, 2)),
+    # Horizontal lines
+    ((0, 0), (1, 0), (2, 0)),
+    ((0, 1), (1, 1), (2, 1)),
+    ((0, 2), (1, 2), (2, 2)),
+    # Diagonals
+    ((0, 0), (1, 1), (2, 2)),
+    ((0, 2), (1, 1), (2, 0))
+]
+
+
 class TicTacToeApp(App):
-    WINNING_LINES = [
-        # Vertical lines
-        ((0, 0), (0, 1), (0, 2)),
-        ((1, 0), (1, 1), (1, 2)),
-        ((2, 0), (2, 1), (2, 2)),
-        # Horizontal lines
-        ((0, 0), (1, 0), (2, 0)),
-        ((0, 1), (1, 1), (2, 1)),
-        ((0, 2), (1, 2), (2, 2)),
-        # Diagonals
-        ((0, 0), (1, 1), (2, 2)),
-        ((0, 2), (1, 1), (2, 0))
-    ]
+
     def __init__(self):
         App.__init__(self, "Tic tac toe")
         self.current_player = 'X'
         self.winner = None
         self.board = Box(self, layout="grid")
-        self.board_squares = self.clear_board() # List[ist[PushButton]]
+        self.board_squares = self.clear_board()
         self.message = Text(self, text="It is your turn, " + self.current_player)
 
     def square(self, x, y) -> PushButton:
@@ -73,7 +76,7 @@ class TicTacToeApp(App):
 
     def is_game_won_or_drawn(self):
         last_player = self.last_player()
-        for line in self.WINNING_LINES:
+        for line in WINNING_LINES:
             if self.line_wins(last_player, line):
                 self.game_won_by(last_player)
                 return
@@ -94,6 +97,6 @@ class TicTacToeApp(App):
                 self.square(i, j).disable()
 
 
-if __name__ == "__main__":  # pragma no cover
+if __name__ == "__main__":  # pragma: no cover
     app = TicTacToeApp()
     app.display()
