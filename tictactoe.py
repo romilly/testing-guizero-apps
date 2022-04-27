@@ -6,9 +6,23 @@ class TicTacToeApp(App):
     def __init__(self):
         App.__init__(self, "Tic tac toe")
         self.turn = 'X'
+        self.winner = None
         self.board = Box(self, layout="grid")
         self.board_squares = self.clear_board()
         self.message = Text(self, text="It is your turn, " + self.turn)
+        self.winning_lines = [
+            # Vertical lines
+            ((0, 0), (0, 1), (0, 2)),
+            ((1, 0), (1, 1), (1, 2)),
+            ((2, 0), (2, 1), (2, 2)),
+            # Horizontal lines
+            ((0, 0), (1, 0), (2, 0)),
+            ((0, 1), (1, 1), (2, 1)),
+            ((0, 2), (1, 2), (2, 2)),
+            # Diagonals
+            ((0, 0), (1, 1), (2, 2)),
+            ((0, 2), (1, 1), (2, 0))
+        ]
 
     def square(self, x, y):
         return self.board_squares[x][y]
@@ -46,7 +60,7 @@ class TicTacToeApp(App):
         self.toggle_player()
         self.is_game_won_or_drawn()
 
-    def winning_line(self, last_player, *locations):
+    def winning_line(self, last_player, locations):
         for x, y in locations:
             if self.square(x, y).text != last_player:
                 return False
@@ -54,22 +68,13 @@ class TicTacToeApp(App):
 
     def is_game_won_or_drawn(self):
         last_player = self.last_player()
-        if (
-            # Vertical lines
-                self.winning_line(last_player, (0, 0), (0, 1), (0, 2)) or
-                self.winning_line(last_player, (1, 0), (1, 1), (1, 2)) or
-                self.winning_line(last_player, (2, 0), (2, 1), (2, 2)) or
-                # Horizontal lines
-                self.winning_line(last_player, (0, 0), (1, 0), (2, 0)) or
-                self.winning_line(last_player, (0, 1), (1, 1), (2, 1)) or
-                self.winning_line(last_player, (0, 2), (1, 2), (2, 2)) or
-                # Diagonals
-                self.winning_line(last_player, (0, 0), (1, 1), (2, 2)) or
-                self.winning_line(last_player, (0, 2), (1, 1), (2, 0))):
-            self.winner = last_player
-            self.disable_all_squares()
-            self.message.value = "%s wins!" % self.winner
-        elif self.moves_taken() == 9:
+        for line in self.winning_lines:
+            if self.winning_line(last_player, line):
+                self.winner = last_player
+                self.disable_all_squares()
+                self.message.value = "%s wins!" % self.winner
+                return
+        if self.moves_taken() == 9:
             self.message.value = "It's a draw"
 
     def disable_all_squares(self):
@@ -78,6 +83,6 @@ class TicTacToeApp(App):
                 self.square(i, j).disable()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma no cover
     app = TicTacToeApp()
     app.display()
