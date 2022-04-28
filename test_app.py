@@ -7,7 +7,7 @@ def push(button: PushButton) -> None:
 import unittest
 from tictactoe import TicTacToeApp
 
-class MyTestCase(unittest.TestCase):
+class TicTacToeTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.app = TicTacToeApp()
