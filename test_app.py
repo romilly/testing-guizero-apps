@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 from guizero import PushButton
+import unittest
+from tictactoe import TicTacToeApp
+
 
 def push(button: PushButton) -> None:
     button.tk.invoke()
 
-import unittest
-from tictactoe import TicTacToeApp
 
 class TicTacToeTestCase(unittest.TestCase):
     @classmethod
@@ -67,9 +68,6 @@ class TicTacToeTestCase(unittest.TestCase):
         self.play(1, 2, 'O')
         self.play(1, 0, 'X')
         self.assertEqual("It's a draw", self.message_value())
-
-    def square_contents(self, x, y):
-        return self.app.square(x, y).text.replace(' ','-')
 
     def push(self, x, y):
         push(self.app.square(x, y))
